@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 20px auto;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #ccc;
+    }
+    input {
+      width: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Registro de Puntuación Individual</h1>
+  <button id="nuevoPartido">Nuevo Partido</button>
+  <table id="tablaPuntuacion">
+    <tr>
+      <th>Nombre</th>
+      <th>Equipos</th>
+      <th>Puntos</th>
+    </tr>
+  </table>
+
+  <script>
+    const tabla = document.getElementById("tablaPuntuacion");
+    const nuevoPartidoButton = document.getElementById("nuevoPartido");
+
+    nuevoPartidoButton.addEventListener("click", () => {
+      const equipos = prompt("Nombres de los Equipos (separados por coma):");
+      const equiposArray = equipos.split(",");
+      const puntuaciones = [];
+
+      // Registrar puntuaciones para cada persona en el partido
+      tabla.querySelectorAll("tr").forEach((row, index) => {
+        if (index > 0) {
+          const puntos = prompt(`Puntos para ${row.cells[0].textContent}:`);
+          puntuaciones.push(parseInt(puntos) || 0);
+        }
+      });
+
+      // Calcular quién ganó el partido y otorgar puntos
+      const maxPuntos = Math.max(...puntuaciones);
+      const ganadores = equiposArray.filter((_, index) => puntuaciones[index] === maxPuntos);
+      const resultado = ganadores.length > 1 ? "Empate" : `Ganador: ${ganadores[0]}`;
+
+      // Actualizar la tabla
+      const newRow = tabla.insertRow(-1);
+      newRow.insertCell(0).textContent = "Puntos";
+      newRow.insertCell(1).textContent = equipos;
+      newRow.insertCell(2).textContent = resultado;
+    });
+  </script>
+</body>
+</html>
